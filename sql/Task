@@ -1,0 +1,108 @@
+-- Create CUSTOMER Table
+CREATE TABLE CUSTOMER (
+    userId INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    userName VARCHAR(256) NOT NULL UNIQUE,
+    email VARCHAR(256),
+    password VARCHAR(256),
+    address VARCHAR(256),
+    contactNumber VARCHAR(256),
+    isAdmin VARCHAR(256),
+    isLoggedIn VARCHAR(256),
+    softDelete VARCHAR(256)
+);
+
+-- Insert Dummy Data into CUSTOMER
+INSERT INTO CUSTOMER (userName, email, password, address, contactNumber, isAdmin, isLoggedIn, softDelete) 
+VALUES ('John Doe', 'john.doe@example.com', 'password123', '123 Main St', '1234567890', 'false', 'false', 'false');
+
+INSERT INTO CUSTOMER (userName, email, password, address, contactNumber, isAdmin, isLoggedIn, softDelete) 
+VALUES ('Jane Smith', 'jane.smith@example.com', 'password456', '456 Oak St', '9876543210', 'true', 'true', 'false');
+
+-- Create TRAIN Table
+CREATE TABLE TRAIN (
+    trainId INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    trainName VARCHAR(256),
+    trainDept VARCHAR(256),
+    trainArr VARCHAR(256),
+    trainDeptTime VARCHAR(256),
+    trainArrTime VARCHAR(256),
+    trainDate VARCHAR(256),
+    capacity INT,
+    trainPrice INT,
+    trainTier VARCHAR(256),
+    trainRoute VARCHAR(256)
+) AUTO_INCREMENT = 1000;
+
+-- Insert Dummy Data into TRAIN
+INSERT INTO TRAIN (trainName, trainDept, trainArr, trainDeptTime, trainArrTime, trainDate, capacity, trainPrice, trainTier, trainRoute)
+VALUES ('Express 1', 'City A', 'City B', '08:00', '12:00', '2024-09-15', 10, 110,'3-Tier','Delhi-Ambala-Mumbai');
+
+INSERT INTO TRAIN (trainName, trainDept, trainArr, trainDeptTime, trainArrTime, trainDate, capacity, trainPrice, trainTier, trainRoute)
+VALUES ('Express 2', 'City B', 'City C', '09:00', '13:00', '2024-09-16', 8, 140, '2-Tier', 'Kolkata-Delhi-Mumbai');
+
+-- Create SEATS Table
+CREATE TABLE SEATS (
+    seatId INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    trainId INT,
+    seatNo INT,
+    status VARCHAR(256),
+    FOREIGN KEY (trainId) REFERENCES TRAIN(trainId) ON DELETE CASCADE
+) AUTO_INCREMENT = 100;
+
+-- Insert Dummy Data into SEATS
+INSERT INTO SEATS (trainId, seatNo, status) 
+VALUES (1001, 1, 'false'),
+       (1001, 2, 'false'),
+       (1001, 3, 'false'),
+       (1001, 4, 'false'),
+       (1001, 5, 'false'),
+       (1001, 6, 'false'),
+       (1001, 7, 'false'),
+       (1001, 8, 'false'),
+       (1001, 9, 'false'),
+       (1001, 10, 'false'),
+       (1002, 1, 'false'),
+       (1002, 2, 'false'),
+       (1002, 3, 'false'),
+       (1002, 4, 'false'),
+       (1002, 5, 'false'),
+       (1002, 6, 'false'),
+       (1002, 7, 'false'),
+       (1002, 8, 'false');
+
+-- Create BOOKING Table
+CREATE TABLE BOOKING (
+    bookingId INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    trainId INT,
+    userId INT,
+    seatId INT,
+    bookingFare INT,
+    bookingDate VARCHAR(256),
+    FOREIGN KEY (trainId) REFERENCES TRAIN(trainId) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES CUSTOMER(userId) ON DELETE CASCADE,
+    FOREIGN KEY (seatId) REFERENCES SEATS(seatId) ON DELETE CASCADE
+) AUTO_INCREMENT = 10000;
+
+-- Insert Dummy Data into BOOKING
+INSERT INTO BOOKING (trainId, userId, seatId, bookingFare, bookingDate)
+VALUES (1001, 1, 1, 100, '2024-09-12'),
+       (1001, 1, 2, 100, '2024-09-12'),
+       (1001, 1, 3, 100, '2024-09-12'),
+       (1002, 2, 1, 1200, '2024-09-13'),
+       (1002, 2, 2, 1200, '2024-09-13');
+
+-- Display Data Queries
+-- Display All Customers
+SELECT * FROM CUSTOMER;
+
+-- Display All Trains
+SELECT * FROM TRAIN;
+
+-- Display All Seats
+SELECT * FROM SEATS;
+
+-- Display Seats for Train 101
+SELECT * FROM SEATS WHERE trainId = 1001;
+
+-- Display All Bookings
+SELECT * FROM BOOKING;
